@@ -3,7 +3,7 @@ import csv
 import tempfile
 import os
 
-def FizzBuzz():
+def Question1():
     for i in range(1,101):
         if i % 3 == 0 and i % 5 ==0:
             print('FizzBuzz')
@@ -14,7 +14,7 @@ def FizzBuzz():
         else:
             print(i)
 
-def VolumeFormula(radius):
+def Question2(radius):
     return float(math.pow(radius, 3)*math.pi*4/3)
 
 records = [
@@ -27,17 +27,7 @@ records = [
 ]
 
 # https://docs.python.org/3/library/csv.html#csv.writer
-def WriteCSV(input):
-    with tempfile.NamedTemporaryFile() as temp_csv:
-
-        
-        writer = csv.writer(temp_csv)
-        writer.writerow(header)
-        
-        for row in input:
-            writer.writerow(row)
-    temp_csv.close()
-
+def Question3(input):
 
     with open('book.csv', 'w', newline='') as output:
         writer = csv.writer(output)
@@ -50,20 +40,21 @@ def WriteCSV(input):
             writer.writerow(row)
     output.close() # close csv file
 
+def Question4():
     dict = {}
 
-    # with open('book.csv', 'r', newline='') as source:
-        # reader = csv.reader(source)
-        # header = next(reader)
-        # for item in header:
-        #     dict[item] = []
+    with open('book.csv', 'r', newline='') as source:
+        reader = csv.reader(source)
+        header = next(reader)
+        for item in header:
+            dict[item] = []
         
-        # for row in reader:
-        #     for item in range(len(row)):
-        #         dict[header[item]].append(row[item])
-    # source.close()
+        for row in reader:
+            for item in range(len(row)):
+                dict[header[item]].append(row[item])
+    source.close()
 
-    # return dict
+    print(dict)
 
 def Question5(data):
     tmp = tempfile.NamedTemporaryFile(delete=False)
@@ -71,7 +62,7 @@ def Question5(data):
     
     dict = {}
     try:
-        with open(tmp,'w', newline='') as destination:
+        with open(tmp.name,'w', newline='') as destination:
             writer=csv.writer(destination)
             writer.writerow(header)
             for row in data:
@@ -81,23 +72,23 @@ def Question5(data):
                     print ('Error in writing row:',e)
 
             
-        with open(tmp,'r', newline='') as source:
+        with open(tmp.name,'r', newline='') as source:
             reader = csv.reader(source)
-            # header = next(reader)
-            # for item in header:
-            #     dict[item] = []
-        
-            for rows in reader:
-                for column, value in rows.items():
-                    dict.setdefault(column, []).append(value)
+            header = next(reader)
+            for item in header:
+                dict[item] = []
+            
+            for row in reader:
+                for item in range(len(row)):
+                    dict[header[item]].append(row[item])
     finally:
-        # os.unlink(tmp)
         tmp.close()
 
     print(dict)
 
 
-# FizzBuzz()
-# print(VolumeFormula(4))
-# WriteCSV(records)
+Question1()
+print(Question2(4))
+# Question3(records)
+# Question4()
 Question5(records)
